@@ -12,10 +12,13 @@ const NewDocument = () => {
 
     const createNewDoc = async () => {
         try {
-            await axios.post('/api/document/new')
-            toast({ title: 'Document added successfully' })
+            const response = await axios.post('/api/document/new')
+            console.log(response);
+            if(response.status == 200){
+                toast({ title: 'Document added successfully' })
+            }
         } catch (error) {
-
+            console.log(error);
         }
     }
 

@@ -6,7 +6,6 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -47,6 +46,7 @@ const EditorBlock: React.FC<EditorBlockProps> = ({ document }) => {
         }
     })
 
+    //function to update document
     async function onUpdateChange(values: z.infer<typeof FormSchema>) {
         try {
             const response = await axios.put(`/api/document/${document?.id}`, values);
@@ -56,19 +56,19 @@ const EditorBlock: React.FC<EditorBlockProps> = ({ document }) => {
         }
     }
 
+    //function to delete document
     async function onDocumentDelete() {
         try {
             const deleteResponse = await axios.delete(`/api/document/${document?.id}`)
             toast({ title: `${deleteResponse.data}`, variant: "destructive" })
         } catch (error) {
             console.log(error);
-            toast({ title: `${error}`, variant: "destructive" })
         }
     }
 
     return (
         <div className='p-4'>
-            <div className='my-2 space-x-4'>
+            <div className='my-2 space-x-4 flex justify-end'>
                 <form onSubmit={onDocumentDelete} className='text-end'>
                     <Button type="submit" variant="destructive" className='px-2 h-8'>Delete</Button>
                 </form>

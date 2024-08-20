@@ -40,7 +40,7 @@ const formats = [
 const Editor = ({ onChange, value }: EditorProps) => {
     return (
         <div>
-            <ReactQuill theme='snow' value={value} onChange={onChange} className='h-[50vh] md:h-[65vh] mb-6 whitespace-pre-wrap' modules={modules} formats={formats}></ReactQuill>
+            <ReactQuill theme='snow' value={value} onChange={onChange} className='h-[55vh] mb-6 whitespace-pre-wrap' modules={modules} formats={formats}></ReactQuill>
         </div>
     )
 }

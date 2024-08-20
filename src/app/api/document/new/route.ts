@@ -1,6 +1,7 @@
 import { db } from "@/utils/db";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -18,6 +19,9 @@ export async function POST(req: Request) {
                 description: ""
             }
         })
+
+        console.log(createNewDoc);
+        
 
         revalidatePath('/document')
         return NextResponse.json(createNewDoc, { status: 200 })

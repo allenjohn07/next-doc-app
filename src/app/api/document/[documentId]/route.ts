@@ -26,8 +26,7 @@ export async function PUT(req: Request, { params }: { params: { documentId: stri
                 description: description
             }
         })
-        revalidatePath('/')
-        revalidatePath('/document/' + params.documentId)
+        revalidatePath('/document')
         return new NextResponse('Successfully updated document', { status: 200 })
     } catch (error) {
         return new NextResponse(`${error}`, { status: 500 })
@@ -49,7 +48,7 @@ export async function DELETE(req: Request, { params }: { params: { documentId: s
                 userId: userId
             }
         })
-        revalidatePath('/')
+        revalidatePath('/document')
         return new NextResponse('Successfully deleted document', { status: 200 })
     } catch (error) {
         return new NextResponse(`${error}`, { status: 500 })
