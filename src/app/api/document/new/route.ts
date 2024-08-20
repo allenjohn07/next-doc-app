@@ -19,7 +19,7 @@ export async function POST(req: Request) {
             }
         })
 
-        revalidatePath('/')
+        revalidatePath('/document')
         return NextResponse.json(createNewDoc, { status: 200 })
     } catch (error) {
         return new NextResponse(`${error}`, { status: 500 })

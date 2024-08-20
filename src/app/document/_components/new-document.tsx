@@ -1,15 +1,19 @@
 'use client'
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { useToast } from '@/components/ui/use-toast'
 import axios from 'axios'
 import { Plus } from 'lucide-react'
 import React from 'react'
 
 const NewDocument = () => {
 
+    const { toast } = useToast()
+
     const createNewDoc = async () => {
         try {
-            const response = await axios.post('/api/document/new')
+            await axios.post('/api/document/new')
+            toast({ title: 'Document added successfully' })
         } catch (error) {
 
         }

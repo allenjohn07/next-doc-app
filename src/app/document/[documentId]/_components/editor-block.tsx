@@ -11,6 +11,7 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useToast } from "@/components/ui/use-toast"
 
 const FormSchema = z.object({
     title: z.string().min(2).max(50),
@@ -36,6 +37,8 @@ const EditorBlock: React.FC<EditorBlockProps> = ({ document }) => {
         redirect('/')
     }
 
+    const { toast } = useToast()
+
     const EditorForm = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -46,16 +49,30 @@ const EditorBlock: React.FC<EditorBlockProps> = ({ document }) => {
 
     async function onUpdateChange(values: z.infer<typeof FormSchema>) {
         try {
-            await axios.put(`/api/document/${document?.id}`, values);
-            revalidatePath('/')
-            revalidatePath('/document/' + document?.id)
+            const response = await axios.put(`/api/document/${document?.id}`, values);
+            toast({ title: `${response.data}` })
         } catch (error) {
             console.log(error);
         }
     }
 
+    async function onDocumentDelete() {
+        try {
+            const deleteResponse = await axios.delete(`/api/document/${document?.id}`)
+            toast({ title: `${deleteResponse.data}`, variant: "destructive" })
+        } catch (error) {
+            console.log(error);
+            toast({ title: `${error}`, variant: "destructive" })
+        }
+    }
+
     return (
-        <div>
+        <div className='p-4'>
+            <div className='my-2 space-x-4'>
+                <form onSubmit={onDocumentDelete} className='text-end'>
+                    <Button type="submit" variant="destructive" className='px-2 h-8'>Delete</Button>
+                </form>
+            </div>
             <Form {...EditorForm} >
                 <form onSubmit={EditorForm.handleSubmit(onUpdateChange)}>
                     <FormField control={EditorForm.control}
@@ -78,7 +95,7 @@ const EditorBlock: React.FC<EditorBlockProps> = ({ document }) => {
                         </FormItem>}
                     >
                     </FormField>
-                    <Button type="submit">Save changes</Button>
+                    <Button className='mt-20 md:mt-8 px-2 h-8' type="submit">Save changes</Button>
                 </form>
             </Form>
         </div>
